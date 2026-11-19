@@ -3,6 +3,7 @@
     ./shell.nix
     ./dev.nix
     ./hyprland.nix
+    ./theme.nix
   ];
 
   home.username = "seraphiine";

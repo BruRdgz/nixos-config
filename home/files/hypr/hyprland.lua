@@ -13,20 +13,30 @@ hl.env("HYPRCURSOR_SIZE", "24")
 
 hl.config({
     general = {
-        gaps_in     = 4,
-        gaps_out    = 8,
-        border_size = 2,
-        layout      = "dwindle",
+        gaps_in          = 3,
+        gaps_out         = 6,
+        border_size      = 0,
+        resize_on_border = true,
+        layout           = "dwindle",
     },
     decoration = {
-        rounding = 6,
+        rounding     = 8,
+        -- Sem bordas, o foco é indicado escurecendo levemente as janelas inativas.
+        dim_inactive = true,
+        dim_strength = 0.1,
+        blur = {
+            enabled = true,
+            size    = 6,
+            passes  = 2,
+        },
     },
     dwindle = {
         preserve_split = true,
     },
-    -- Placeholder: wallpapers padrão do Hyprland até escolhermos um.
+    -- O wallpaper vem do hyprpaper (home/theme.nix).
     misc = {
-        force_default_wallpaper = -1,
+        force_default_wallpaper = 0,
+        disable_hyprland_logo   = true,
     },
     input = {
         kb_layout  = "br,us",
