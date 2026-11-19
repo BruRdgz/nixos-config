@@ -14,9 +14,9 @@
   # Disco virtio com serial "nixsys" no virt-manager.
   disko.devices.disk.system.device = lib.mkForce "/dev/disk/by-id/virtio-nixsys";
 
-  # Senha da VM (LUKS e usuário): "nixos". O arquivo só é lido pelo disko ao formatar.
+  # Senha do LUKS na VM: "nixos". O arquivo só é lido pelo disko ao formatar.
+  # (A senha do usuário vem do sops: secrets/secrets.yaml.)
   disko.devices.disk.system.content.partitions.luks.content.passwordFile = "/tmp/luks.key";
-  users.users.seraphiine.initialPassword = "nixos";
 
   # O repo do host, editado pelo Claude e aplicado aqui com nixos-rebuild.
   fileSystems."/home/seraphiine/nixos-config" = {

@@ -1,7 +1,7 @@
-# sops-nix: os segredos ficam criptografados no repo e são descriptografados para
-# /run/secrets na ativação, nunca no /nix/store. A máquina usa a chave SSH do host.
-# Os segredos (e o backup restic, que depende deles) entram quando a chave age
-# pessoal e o .sops.yaml existirem.
+# sops-nix: os segredos ficam criptografados em secrets/secrets.yaml e são
+# descriptografados para /run/secrets na ativação, nunca no /nix/store.
+# A máquina usa a chave SSH do host; editar: `sops secrets/secrets.yaml`.
+{ config, pkgs, ... }:
 {
   services.openssh = {
     enable = true;
@@ -9,5 +9,20 @@
     settings.PasswordAuthentication = false;
   };
 
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  sops = {
+    defaultSopsFile = ../../secrets/secrets.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    # Precisa existir antes da criação dos usuários.
+    secrets.user-password.neededForUsers = true;
+  };
+
+  # Usuários declarativos: a senha vem do sops e `passwd` não persiste entre rebuilds.
+  users.mutableUsers = false;
+  users.users.seraphiine.hashedPasswordFile = config.sops.secrets.user-password.path;
+
+  environment.systemPackages = with pkgs; [
+    sops
+    age
+    ssh-to-age
+  ];
 }

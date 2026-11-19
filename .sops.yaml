@@ -1,0 +1,13 @@
+# Quem consegue descriptografar os segredos. Ao instalar uma máquina nova, adicione a
+# chave dela (`ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub`) e rode
+# `sops updatekeys secrets/secrets.yaml`.
+keys:
+  # Chave pessoal (~/.config/sops/age/keys.txt). Gerada na VM; regerar no desktop real.
+  - &seraphiine age13g9346h4crz2ujyjfn3j26fkg5gmtnpz9nh2pth2n9m9xhjthuhs6duyp7
+  - &desktop-vm age18d8r9f7z9l9xd8wxmdxs0j35lj2y5r7d6mh7f2u89fgpd5le4dashermu5
+creation_rules:
+  - path_regex: ^secrets/[^/]+\.yaml$
+    key_groups:
+      - age:
+          - *seraphiine
+          - *desktop-vm

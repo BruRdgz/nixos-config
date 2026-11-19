@@ -13,6 +13,7 @@
     ./dev.nix
     ./fhs.nix
     ./secrets.nix
+    ./backup.nix
   ];
 
   home-manager = {

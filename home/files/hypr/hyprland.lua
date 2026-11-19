@@ -24,9 +24,9 @@ hl.config({
     dwindle = {
         preserve_split = true,
     },
+    -- Placeholder: wallpapers padrão do Hyprland até escolhermos um.
     misc = {
-        force_default_wallpaper = 0,
-        disable_hyprland_logo   = true,
+        force_default_wallpaper = -1,
     },
     input = {
         kb_layout  = "br,us",
