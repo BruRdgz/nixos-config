@@ -1,6 +1,5 @@
 -- Config do Hyprland (API Lua). Referência: https://wiki.hypr.land/configuring/
 -- Tipos da API: ~/.config/hypr/.luarc.json aponta para os stubs do pacote.
--- `palette` é definida antes deste arquivo pelo home/hyprland.nix, a partir de home/palette.nix.
 
 local terminal    = "kitty"
 local menu        = "fuzzel"
@@ -14,18 +13,17 @@ hl.env("HYPRCURSOR_SIZE", "24")
 
 hl.config({
     general = {
-        gaps_in          = 4,
-        gaps_out         = 8,
-        border_size      = 2,
+        gaps_in          = 3,
+        gaps_out         = 6,
+        border_size      = 0,
         resize_on_border = true,
         layout           = "dwindle",
-        col = {
-            active_border   = palette.accent,
-            inactive_border = palette.bg3,
-        },
     },
     decoration = {
-        rounding = 4,
+        rounding     = 8,
+        -- Sem bordas, o foco é indicado escurecendo levemente as janelas inativas.
+        dim_inactive = true,
+        dim_strength = 0.1,
         blur = {
             enabled = true,
             size    = 6,
@@ -96,13 +94,6 @@ hl.bind("XF86AudioPrev",        hl.dsp.exec_cmd("playerctl previous"),   { locke
 ---------------
 ---- RULES ----
 ---------------
-
--- A barra é translúcida; o blur atrás dela vem daqui.
-hl.layer_rule({
-    name  = "blur-waybar",
-    match = { namespace = "waybar" },
-    blur  = true,
-})
 
 hl.window_rule({
     name  = "suppress-maximize-events",

@@ -1,49 +1,32 @@
-# Paleta "Pista molhada", tirada do wallpaper (home/files/wallpapers/pista.png):
-# sombras azul-marinho, céu nublado, amarelo da Ferrari e as cores da pista.
-# Todos os módulos de aparência leem daqui; trocar o tema = trocar este arquivo.
-rec {
-  # Fundos (sombras do asfalto)
-  bg0 = "#14171d";
-  bg1 = "#1f242c";
-  bg2 = "#2b313a";
-  bg3 = "#3a414c";
-  # Texto (céu nublado)
-  fg = "#d7dadb";
-  fgDim = "#a0a2a3";
-  muted = "#6b7079";
-
-  # Destaques
-  accent = "#f0c419"; # amarelo Ferrari
-  alert = "#e5484d"; # lanternas
-  magenta = "#d6409f"; # banner FINISH
-  orange = "#e8924f"; # torre
-  teal = "#4fb3bf"; # bandeiras
-  green = "#8fb573";
-  blue = "#6c9fd6";
-
-  # 16 cores do terminal
-  ansi = {
-    black = bg2;
-    red = alert;
-    green = green;
-    yellow = accent;
-    blue = blue;
-    magenta = magenta;
-    cyan = teal;
-    white = fgDim;
-    brightBlack = muted;
-    brightRed = "#f07175";
-    brightGreen = "#a9cc8c";
-    brightYellow = "#f7d65a";
-    brightBlue = "#8fb8e6";
-    brightMagenta = "#e46cb5";
-    brightCyan = "#76c9d3";
-    brightWhite = fg;
-  };
+# Paleta Gruvbox Dark (https://github.com/morhetz/gruvbox), usada por todos os
+# módulos de aparência. Trocar o tema = trocar este arquivo.
+{
+  bg0h = "#1d2021";
+  bg0 = "#282828";
+  bg1 = "#3c3836";
+  bg2 = "#504945";
+  bg3 = "#665c54";
+  fg0 = "#fbf1c7";
+  fg = "#ebdbb2";
+  fg4 = "#a89984";
+  gray = "#928374";
+  red = "#cc241d";
+  green = "#98971a";
+  yellow = "#d79921";
+  blue = "#458588";
+  purple = "#b16286";
+  aqua = "#689d6a";
+  orange = "#d65d0e";
+  brightRed = "#fb4934";
+  brightGreen = "#b8bb26";
+  brightYellow = "#fabd2f";
+  brightBlue = "#83a598";
+  brightPurple = "#d3869b";
+  brightAqua = "#8ec07c";
+  brightOrange = "#fe8019";
 
   font = {
-    ui = "Inter";
-    mono = "JetBrains Mono";
+    mono = "DejaVu Sans Mono";
     icons = "JetBrainsMono Nerd Font";
   };
 }
