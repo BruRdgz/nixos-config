@@ -4,69 +4,9 @@
     enable = true;
     # O UWSM (habilitado no sistema) já cuida da sessão systemd.
     systemd.enable = false;
-    settings = {
-      "$mod" = "SUPER";
-      "$terminal" = "kitty";
-      "$menu" = "fuzzel";
-
-      monitor = [ ",preferred,auto,1" ];
-
-      input = {
-        kb_layout = "br,us";
-        # custom:scroll_led_numlock: o backlight do teclado (LED do Scroll Lock) segue o Num Lock.
-        kb_options = "grp:win_space_toggle,custom:scroll_led_numlock";
-        numlock_by_default = true;
-        follow_mouse = 1;
-      };
-
-      general = {
-        gaps_in = 4;
-        gaps_out = 8;
-        border_size = 2;
-        layout = "dwindle";
-      };
-
-      decoration.rounding = 6;
-
-      bind = [
-        "$mod, Return, exec, $terminal"
-        "$mod, D, exec, $menu"
-        "$mod, Q, killactive"
-        "$mod SHIFT, E, exec, uwsm stop"
-        "$mod, L, exec, loginctl lock-session"
-        "$mod, F, fullscreen"
-        "$mod, V, togglefloating"
-        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-      ]
-      ++ builtins.concatLists (
-        builtins.genList (
-          i:
-          let
-            ws = toString (i + 1);
-            key = toString (if i == 9 then 0 else i + 1);
-          in
-          [
-            "$mod, ${key}, workspace, ${ws}"
-            "$mod SHIFT, ${key}, movetoworkspace, ${ws}"
-          ]
-        ) 10
-      );
-
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-      ];
-
-      bindel = [
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-      ];
-    };
+    # Config em Lua (formato atual do Hyprland), escrita à mão: mais legível que gerar Lua a partir de Nix.
+    configType = "lua";
+    extraConfig = builtins.readFile ./files/hypr/hyprland.lua;
   };
 
   # Opção xkb custom, a mesma do Fedora; o libxkbcommon lê ~/.config/xkb.
@@ -110,6 +50,7 @@
     grim
     slurp
     wl-clipboard
+    playerctl
     pavucontrol
     nautilus
   ];
