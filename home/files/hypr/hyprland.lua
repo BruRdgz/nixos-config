@@ -37,6 +37,8 @@ hl.config({
     misc = {
         force_default_wallpaper = 0,
         disable_hyprland_logo   = true,
+        -- Sem as frases aleatórias que o Hyprland desenha sobre o wallpaper.
+        disable_splash_rendering = true,
     },
     input = {
         kb_layout  = "br,us",
