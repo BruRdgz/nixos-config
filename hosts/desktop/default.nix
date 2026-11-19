@@ -1,7 +1,8 @@
 {
   imports = [
     ./hardware.nix
-    ./disko.nix
+    ./disk-system.nix
+    ./disk-data.nix
     ../../modules/nixos
   ];
 

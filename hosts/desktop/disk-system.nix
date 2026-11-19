@@ -1,7 +1,5 @@
-# Disco 1: sistema. Disco 2: dados/jogos. Cada um com seu LUKS, então a falha de um
-# não leva o outro. A mesma senha destrava os dois: o initrd systemd reaproveita a
-# senha digitada.
-# TODO(hardware): trocar os placeholders por /dev/disk/by-id/... da máquina real.
+# Disco 1: sistema (ESP + LUKS com btrfs).
+# TODO(hardware): trocar o placeholder por /dev/disk/by-id/... da máquina real.
 let
   btrfsOpts = [
     "compress=zstd"
@@ -52,36 +50,6 @@ in
                     mountpoint = "/var/log";
                     mountOptions = btrfsOpts;
                   };
-                };
-              };
-            };
-          };
-        };
-      };
-    };
-
-    data = {
-      type = "disk";
-      device = "/dev/disk/by-id/PLACEHOLDER-disco-dados";
-      content = {
-        type = "gpt";
-        partitions.luks = {
-          size = "100%";
-          content = {
-            type = "luks";
-            name = "cryptdata";
-            settings.allowDiscards = true;
-            content = {
-              type = "btrfs";
-              extraArgs = [ "-f" ];
-              subvolumes = {
-                "@data" = {
-                  mountpoint = "/data";
-                  mountOptions = btrfsOpts;
-                };
-                "@games" = {
-                  mountpoint = "/data/games";
-                  mountOptions = btrfsOpts;
                 };
               };
             };
