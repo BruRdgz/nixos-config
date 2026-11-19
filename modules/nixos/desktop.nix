@@ -43,6 +43,7 @@
     noto-fonts-cjk-sans
     noto-fonts-color-emoji
     nerd-fonts.jetbrains-mono
-    dejavu_fonts
+    jetbrains-mono
+    inter
   ];
 }
