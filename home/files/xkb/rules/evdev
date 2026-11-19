@@ -1,0 +1,4 @@
+! include %S/evdev
+
+! option = compat
+  custom:scroll_led_numlock = +custom(scroll_led_numlock)

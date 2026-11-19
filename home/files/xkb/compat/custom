@@ -1,0 +1,11 @@
+// O backlight deste teclado é ligado ao LED do Scroll Lock. Travar o Scroll Lock
+// (opção scrolllock:mod3) deixa Mod3 ativo, e o mutter então ignora a tecla Super
+// sozinha. Num Lock (Mod2) é ignorado pelo mutter, então o LED segue o Num Lock.
+partial xkb_compatibility "scroll_led_numlock" {
+    virtual_modifiers NumLock;
+
+    indicator "Scroll Lock" {
+	whichModState= Locked;
+	modifiers= NumLock;
+    };
+};
