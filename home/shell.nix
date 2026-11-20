@@ -14,7 +14,7 @@ let
     set -g pane-active-border-style fg="${p.accent}"
     set -g mode-style bg="${p.bg3}",fg="${p.fg0}"
 
-    set -g status-left "#[bg=${p.accent},fg=${p.bg0h},bold] #S #[bg=${p.bg1},fg=${p.accent},nobold] "
+    set -g status-left "#[bg=${p.accent},fg=${p.bg0h},bold] #{?session_grouped,#{session_group},#S} #[bg=${p.bg1},fg=${p.accent},nobold] "
     set -g status-right "#[fg=${p.gray}] save:#{continuum_status} #[bg=${p.bg1},fg=${p.bg2}]#[bg=${p.bg2},fg=${p.fg}] %H:%M #[bg=${p.bg2},fg=${p.red}]#[bg=${p.red},fg=${p.fg0},bold] %d %b "
 
     set -g window-status-format "#[fg=${p.bg1},bg=${p.bg2}]#[fg=${p.fg4},bg=${p.bg2}] #I: #W #[fg=${p.bg2},bg=${p.bg1}]"
@@ -68,7 +68,17 @@ in
     # Cada terminal novo entra na mesma sessão "default" do tmux (fora de IDEs).
     initContent = ''
       if [[ -o interactive && -t 0 && -t 1 && -z "$TMUX" && -z "$VSCODE_INJECTION" && -z "$INTELLIJ_ENVIRONMENT_READER" ]]; then
-        tmux attach -t default 2>/dev/null || tmux new -s default
+        # O primeiro terminal assume a sessão "default" (as abas restauradas pelo
+        # continuum). Os seguintes entram numa sessão agrupada com ela: mesmas abas, mas
+        # cada terminal ganha uma aba nova e troca de aba sem espelhar os outros. A sessão
+        # agrupada some ao fechar o terminal; a aba fica, como qualquer aba do tmux.
+        if ! tmux has-session -t default 2>/dev/null; then
+          tmux new-session -s default
+        elif [[ -z "$(tmux list-clients -t default 2>/dev/null)" ]]; then
+          tmux attach-session -t default
+        else
+          tmux new-session -t default -s "term-$$" \; set-option destroy-unattached on \; new-window -c "$PWD"
+        fi
       fi
     '';
   };
