@@ -43,6 +43,10 @@ in
     ];
   };
 
+  # O hyprlock (configurado no home-manager) autentica pelo PAM "hyprlock"; sem este
+  # serviço ele cai no do `su` e a senha pode não destravar a tela.
+  security.pam.services.hyprlock = { };
+
   # Keyring destravado pela senha do login (segredos de apps, tokens do gh etc.).
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;

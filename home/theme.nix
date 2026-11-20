@@ -179,23 +179,80 @@ in
     };
   };
 
+  # Inspirado na tela de bloqueio do GNOME: relógio grande com a data embaixo no alto,
+  # usuário e senha embaixo, sobre o wallpaper desfocado e escurecido.
   programs.hyprlock.settings = {
+    general.hide_cursor = true;
     background = [
       {
         path = "${wallpaper}";
-        blur_passes = 2;
+        blur_passes = 3;
+        blur_size = 8;
+        brightness = 0.55;
+      }
+    ];
+    label = [
+      # Relógio
+      {
+        text = "$TIME";
+        font_family = "${p.font.mono} Light";
+        font_size = 104;
+        color = "rgb(${hex p.fg0})";
+        position = "0, 210";
+        halign = "center";
+        valign = "center";
+      }
+      # Data por extenso ("sexta-feira, 20 de novembro"), atualizada a cada minuto.
+      {
+        text = ''cmd[update:60000] LC_TIME=pt_BR.UTF-8 date +"%A, %-d de %B"'';
+        font_family = p.font.mono;
+        font_size = 20;
+        color = "rgb(${hex p.fg})";
+        position = "0, 110";
+        halign = "center";
+        valign = "center";
+      }
+      # Usuário acima do campo
+      {
+        text = "  $USER";
+        font_family = p.font.mono;
+        font_size = 16;
+        color = "rgb(${hex p.accent})";
+        position = "0, -150";
+        halign = "center";
+        valign = "center";
+      }
+      # Layout de teclado ativo, para não errar a senha por estar em "us".
+      {
+        text = "󰌌  $LAYOUT";
+        font_family = p.font.mono;
+        font_size = 12;
+        color = "rgb(${hex p.fg4})";
+        position = "0, -265";
+        halign = "center";
+        valign = "center";
       }
     ];
     input-field = [
       {
-        size = "280, 50";
-        outer_color = "rgb(${hex p.bg2})";
-        inner_color = "rgb(${hex p.bg1})";
+        size = "320, 48";
+        position = "0, -210";
+        halign = "center";
+        valign = "center";
+        # Sempre visível, como no GNOME (o padrão some quando está vazio).
+        fade_on_empty = false;
+        rounding = -1;
+        outline_thickness = 2;
+        outer_color = "rgba(${hex p.bg3}cc)";
+        inner_color = "rgba(${hex p.bg1}cc)";
         font_color = "rgb(${hex p.fg})";
+        font_family = p.font.mono;
         check_color = "rgb(${hex p.accent})";
-        fail_color = "rgb(${hex p.red})";
-        placeholder_text = "senha";
-        rounding = 12;
+        fail_color = "rgb(${hex p.brightRed})";
+        fail_text = "senha incorreta";
+        placeholder_text = "<i>digite a senha…</i>";
+        dots_size = 0.25;
+        dots_spacing = 0.35;
       }
     ];
   };
