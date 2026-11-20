@@ -42,6 +42,8 @@ in
   };
 
   # Formato do hyprpaper 0.8+: um bloco por wallpaper; monitor vazio = todos.
+  # O hyprpaper desenha frases aleatórias sobre o wallpaper por padrão.
+  services.hyprpaper.settings.splash = false;
   services.hyprpaper.settings.wallpaper = [
     {
       monitor = "";
@@ -98,12 +100,12 @@ in
     colors = {
       background = "${hex p.bg1}f2";
       text = "${hex p.fg}ff";
-      prompt = "${hex p.yellow}ff";
+      prompt = "${hex p.accent}ff";
       input = "${hex p.fg}ff";
-      match = "${hex p.yellow}ff";
-      selection = "${hex p.blue}ff";
+      match = "${hex p.accent}ff";
+      selection = "${hex p.bg3}ff";
       selection-text = "${hex p.fg}ff";
-      selection-match = "${hex p.brightYellow}ff";
+      selection-match = "${hex p.accent}ff";
       border = "${hex p.bg2}ff";
     };
     border = {
@@ -141,7 +143,7 @@ in
         outer_color = "rgb(${hex p.bg2})";
         inner_color = "rgb(${hex p.bg1})";
         font_color = "rgb(${hex p.fg})";
-        check_color = "rgb(${hex p.yellow})";
+        check_color = "rgb(${hex p.accent})";
         fail_color = "rgb(${hex p.red})";
         placeholder_text = "senha";
         rounding = 12;

@@ -113,7 +113,7 @@ in
 
       #custom-logo {
         font-size: 20px;
-        color: ${p.yellow};
+        color: ${p.brightRed};
         padding: 0 14px 0 4px;
       }
 
@@ -126,12 +126,12 @@ in
 
       #workspaces button.active {
         background: ${p.bg2};
-        color: ${p.yellow};
+        color: ${p.accent};
         min-width: 34px;
       }
 
       #workspaces button:hover {
-        color: ${p.red};
+        color: ${p.brightRed};
         box-shadow: none;
         text-shadow: none;
       }
