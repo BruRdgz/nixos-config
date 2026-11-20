@@ -5,19 +5,71 @@ let
   wallpaper = ./files/wallpapers/giyu.jpg;
   # mako/fuzzel aceitam cor com alfa em hex (RRGGBBAA).
   hex = c: builtins.substring 1 6 c;
+
+  # Cores nomeadas do libadwaita, que o adw-gtk3 (GTK 3) também respeita: é assim
+  # que os dois toolkits recebem a nossa paleta sem um tema GTK próprio.
+  shade = "rgba(0, 0, 0, 0.36)";
+  adwaitaColors = ''
+    @define-color accent_color ${p.accent};
+    @define-color accent_bg_color ${p.blue};
+    @define-color accent_fg_color ${p.fg0};
+    @define-color destructive_color ${p.brightRed};
+    @define-color destructive_bg_color ${p.red};
+    @define-color destructive_fg_color ${p.fg0};
+    @define-color success_color ${p.brightGreen};
+    @define-color success_bg_color ${p.green};
+    @define-color success_fg_color ${p.fg0};
+    @define-color warning_color ${p.brightYellow};
+    @define-color warning_bg_color ${p.yellow};
+    @define-color warning_fg_color ${p.bg0h};
+    @define-color error_color ${p.brightRed};
+    @define-color error_bg_color ${p.red};
+    @define-color error_fg_color ${p.fg0};
+
+    @define-color window_bg_color ${p.bg0};
+    @define-color window_fg_color ${p.fg};
+    @define-color view_bg_color ${p.bg0h};
+    @define-color view_fg_color ${p.fg};
+    @define-color headerbar_bg_color ${p.bg1};
+    @define-color headerbar_fg_color ${p.fg};
+    @define-color headerbar_border_color ${p.fg};
+    @define-color headerbar_backdrop_color ${p.bg0};
+    @define-color headerbar_shade_color ${shade};
+    @define-color sidebar_bg_color ${p.bg1};
+    @define-color sidebar_fg_color ${p.fg};
+    @define-color sidebar_backdrop_color ${p.bg0};
+    @define-color sidebar_shade_color ${shade};
+    @define-color card_bg_color ${p.bg1};
+    @define-color card_fg_color ${p.fg};
+    @define-color card_shade_color ${shade};
+    @define-color dialog_bg_color ${p.bg1};
+    @define-color dialog_fg_color ${p.fg};
+    @define-color popover_bg_color ${p.bg1};
+    @define-color popover_fg_color ${p.fg};
+    @define-color thumbnail_bg_color ${p.bg1};
+    @define-color thumbnail_fg_color ${p.fg};
+    @define-color shade_color ${shade};
+    @define-color scrollbar_outline_color rgba(0, 0, 0, 0.5);
+  '';
 in
 {
   imports = [ ./waybar.nix ];
 
   gtk = {
     enable = true;
+    colorScheme = "dark";
     theme = {
-      name = "Gruvbox-Dark";
-      package = pkgs.gruvbox-gtk-theme;
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
     };
+    gtk3.extraCss = adwaitaColors;
+    # O GTK 4 já usa o libadwaita; não importar um tema, só as cores.
+    gtk4.theme = null;
+    gtk4.extraCss = adwaitaColors;
     iconTheme = {
       name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
+      # Pastas no azul da lâmina, o destaque da paleta.
+      package = pkgs.papirus-icon-theme.override { color = "blue"; };
     };
     font = {
       name = p.font.mono;
