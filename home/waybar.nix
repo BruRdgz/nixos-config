@@ -1,13 +1,45 @@
-# Barra em "pílulas" flutuantes. Esquerda: lançador, workspaces e janela ativa.
-# Centro: mídia. Direita: sistema, status, bandeja, relógio, notificações e energia.
+# Barra em blocos que "pendem" do topo da tela, com bordas curvas tipo aba de navegador.
+# Esquerda: lançador, workspaces e janela ativa. Centro: mídia. Direita: sistema,
+# status, bandeja, relógio, notificações e energia.
+{ pkgs, ... }:
 let
   p = import ./palette.nix;
+
+  barHeight = 32;
+  # Largura da curva que liga um bloco ao topo da tela.
+  earWidth = 26;
+  # O CSS do GTK não tem canto côncavo: a curva (um "S" que sai horizontal no topo e
+  # chega horizontal embaixo) é um SVG na cor do bloco, desenhado sobre a borda lateral.
+  ear =
+    side:
+    let
+      path =
+        if side == "right" then "M0 0 H26 C13 0 13 32 0 32 Z" else "M26 0 H0 C13 0 13 32 26 32 Z";
+    in
+    pkgs.writeText "waybar-ear-${side}.svg" ''
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="32" viewBox="0 0 26 32" preserveAspectRatio="none">
+        <path d="${path}" fill="${p.bg1}"/>
+      </svg>
+    '';
+  # Bloco com a curva de um lado: a cor de fundo fica no padding-box e a curva ocupa
+  # a borda (transparente) daquele lado.
+  withEar = side: ''
+    background-color: transparent;
+    border-${side}: ${toString earWidth}px solid transparent;
+    background-image: linear-gradient(${p.bg1}, ${p.bg1}), url("${ear side}");
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    background-position: center, ${side};
+    background-size: auto, ${toString earWidth}px 100%;
+    background-repeat: no-repeat;
+  '';
 in
 {
   programs.waybar = {
     settings = [
       {
         layer = "top";
+        height = barHeight;
         spacing = 0;
 
         modules-left = [
@@ -62,8 +94,14 @@ in
         };
 
         mpris = {
-          format = "{player_icon} {title} · {artist}";
-          format-paused = "{status_icon} {title} · {artist}";
+          # {dynamic} junta só os campos presentes (sem "·" solto quando falta artista).
+          format = "{player_icon} {dynamic}";
+          format-paused = "{status_icon} {dynamic}";
+          dynamic-order = [
+            "title"
+            "artist"
+          ];
+          dynamic-separator = " · ";
           player-icons.default = "󰝚";
           status-icons.paused = "󰏤";
           title-len = 35;
@@ -205,7 +243,7 @@ in
     style = ''
       * {
         border: none;
-        border-radius: 13px;
+        border-radius: 0;
         font-family: "${p.font.mono}";
         font-size: 14px;
         min-height: 0;
@@ -219,9 +257,10 @@ in
       tooltip {
         background: ${p.bg0};
         border: 1px solid ${p.bg3};
+        border-radius: 10px;
       }
 
-      /* Cada grupo é uma pílula própria. */
+      /* Módulos vizinhos com o mesmo fundo formam um bloco contínuo. */
       #launcher,
       #window,
       #mpris,
@@ -231,10 +270,30 @@ in
       #clock,
       #custom-notification,
       #custom-power {
-        background: ${p.bg1};
-        padding: 1px 10px;
-        margin: 5px 3px 0 3px;
+        background-color: ${p.bg1};
+        padding: 0 10px;
+        margin: 0;
       }
+
+      /* Bloco da esquerda: a curva fica no último módulo visível. */
+      #window { ${withEar "right"} }
+      window#waybar.empty #launcher { ${withEar "right"} }
+
+      /* Centro: curva dos dois lados (some junto com o mpris quando nada toca). */
+      #mpris {
+        background-color: transparent;
+        border-left: ${toString earWidth}px solid transparent;
+        border-right: ${toString earWidth}px solid transparent;
+        background-image: linear-gradient(${p.bg1}, ${p.bg1}), url("${ear "left"}"), url("${ear "right"}");
+        background-clip: padding-box, border-box, border-box;
+        background-origin: padding-box, border-box, border-box;
+        background-position: center, left, right;
+        background-size: auto, ${toString earWidth}px 100%, ${toString earWidth}px 100%;
+        background-repeat: no-repeat;
+      }
+
+      /* Bloco da direita começa com a curva à esquerda. */
+      #system { ${withEar "left"} }
 
       #custom-logo {
         font-size: 20px;
@@ -244,6 +303,8 @@ in
 
       #workspaces button {
         padding: 0 6px;
+        margin: 4px 1px;
+        border-radius: 10px;
         background: transparent;
         color: ${p.fg4};
         transition: all 0.3s ease-in-out;
@@ -269,16 +330,16 @@ in
         color: ${p.fg4};
       }
 
-      /* Sem janela aberta, a pílula do título some. */
+      /* Sem janela aberta, o título some (e a curva passa para o lançador). */
       window#waybar.empty #window {
-        background: transparent;
+        background: none;
+        border: none;
         padding: 0;
-        margin: 0;
       }
 
       #mpris {
         color: ${p.fg};
-        padding: 1px 14px;
+        padding: 0 8px;
       }
 
       #mpris.paused {
