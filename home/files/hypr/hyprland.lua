@@ -63,6 +63,8 @@ hl.bind(mainMod .. " + J",         hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + L",         hl.dsp.exec_cmd("loginctl lock-session"))
 -- A sessão roda sob o UWSM; sair por ele encerra os serviços da sessão corretamente.
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("uwsm stop"))
+hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd("swaync-client -t -sw"))
+hl.bind(mainMod .. " + Escape",    hl.dsp.exec_cmd("wlogout -b 5 -T 260 -B 260 -L 120 -R 120"))
 hl.bind("Print",                   hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | wl-copy"))
 
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))

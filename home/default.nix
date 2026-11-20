@@ -4,6 +4,7 @@
     ./dev.nix
     ./hyprland.nix
     ./theme.nix
+    ./panel.nix
   ];
 
   home.username = "seraphiine";

@@ -19,7 +19,6 @@
     enable = true;
     systemd.enable = true;
   };
-  services.mako.enable = true;
   services.hyprpolkitagent.enable = true;
   services.hyprpaper.enable = true;
 

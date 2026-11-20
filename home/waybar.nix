@@ -1,5 +1,5 @@
-# Barra em "pílulas" flutuantes: workspaces em kana à esquerda, mídia no centro,
-# áudio/layout/bandeja/relógio à direita.
+# Barra em "pílulas" flutuantes. Esquerda: lançador, workspaces e janela ativa.
+# Centro: mídia. Direita: sistema, status, bandeja, relógio, notificações e energia.
 let
   p = import ./palette.nix;
 in
@@ -11,16 +11,26 @@ in
         spacing = 0;
 
         modules-left = [
-          "custom/logo"
-          "hyprland/workspaces"
+          "group/launcher"
+          "hyprland/window"
         ];
         modules-center = [ "mpris" ];
         modules-right = [
-          "pulseaudio"
-          "hyprland/language"
+          "group/system"
+          "group/status"
           "tray"
           "clock"
+          "custom/notification"
+          "custom/power"
         ];
+
+        "group/launcher" = {
+          orientation = "horizontal";
+          modules = [
+            "custom/logo"
+            "hyprland/workspaces"
+          ];
+        };
 
         "custom/logo" = {
           format = "";
@@ -45,20 +55,90 @@ in
           };
         };
 
+        "hyprland/window" = {
+          format = "{title}";
+          max-length = 45;
+          separate-outputs = true;
+        };
+
         mpris = {
-          format = "{player_icon} {title} - {artist}";
-          format-paused = "{status_icon} {title} - {artist}";
+          format = "{player_icon} {title} · {artist}";
+          format-paused = "{status_icon} {title} · {artist}";
           player-icons.default = "󰝚";
           status-icons.paused = "󰏤";
-          title-len = 40;
-          artist-len = 25;
+          title-len = 35;
+          artist-len = 20;
+          tooltip-format = "{player}: {title} — {artist} ({album})\nclique: tocar/pausar · direito: próxima · meio: anterior";
+          on-click = "playerctl play-pause";
+          on-click-right = "playerctl next";
+          on-click-middle = "playerctl previous";
+        };
+
+        "group/system" = {
+          orientation = "horizontal";
+          modules = [
+            "cpu"
+            "memory"
+            "temperature"
+          ];
+        };
+
+        cpu = {
+          format = "󰻠 {usage}%";
+          interval = 3;
+          on-click = "kitty -e btop";
+        };
+
+        memory = {
+          format = "󰍛 {percentage}%";
+          interval = 5;
+          tooltip-format = "{used:0.1f} / {total:0.1f} GiB em uso";
+          on-click = "kitty -e btop";
+        };
+
+        # TODO(hardware): no Ryzen do desktop, apontar para o k10temp
+        # (hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon"; input-filename = "temp1_input").
+        temperature = {
+          format = "󰔏 {temperatureC}°";
+          critical-threshold = 85;
+          interval = 5;
+        };
+
+        "group/status" = {
+          orientation = "horizontal";
+          modules = [
+            "network"
+            "bluetooth"
+            "pulseaudio"
+            "hyprland/language"
+          ];
+        };
+
+        network = {
+          format-ethernet = "󰈀";
+          format-wifi = "󰖩";
+          format-disconnected = "󰌘";
+          tooltip-format-ethernet = "{ifname}: {ipaddr}/{cidr}";
+          tooltip-format-wifi = "{essid} ({signalStrength}%): {ipaddr}/{cidr}";
+          tooltip-format-disconnected = "Sem conexão";
+          on-click = "kitty -e nmtui";
+        };
+
+        bluetooth = {
+          format = "󰂯";
+          format-off = "󰂲";
+          format-disabled = "󰂲";
+          format-connected = "󰂱 {num_connections}";
+          # Sem adaptador (como na VM), o módulo some.
+          format-no-controller = "";
+          tooltip-format-connected = "{device_enumerate}";
+          tooltip-format-enumerate-connected = "{device_alias}";
+          on-click = "blueman-manager";
         };
 
         pulseaudio = {
-          format = "{icon} {volume}%  {format_source}";
-          format-muted = "󰖁  {format_source}";
-          format-source = "󰍬";
-          format-source-muted = "󰍭";
+          format = "{icon} {volume}%";
+          format-muted = "󰖁";
           format-icons = {
             headphone = "󰋋";
             default = [
@@ -67,9 +147,9 @@ in
               "󰕾"
             ];
           };
+          scroll-step = 5;
           on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-          on-click-middle = "pavucontrol";
+          on-click-right = "pavucontrol";
         };
 
         "hyprland/language" = {
@@ -84,7 +164,40 @@ in
 
         clock = {
           format = "{:%H:%M}";
-          tooltip-format = "{:%A, %d de %B de %Y}";
+          format-alt = "{:%a, %d %b  %H:%M}";
+          locale = "pt_BR.UTF-8";
+          tooltip-format = "<tt>{calendar}</tt>";
+          calendar = {
+            mode = "month";
+            format.today = "<span color='${p.accent}'><b>{}</b></span>";
+          };
+        };
+
+        # Central de notificações (swaync): clique abre o painel, direito alterna "não perturbe".
+        "custom/notification" = {
+          format = "{icon}";
+          format-icons = {
+            notification = "󱅫";
+            none = "󰂚";
+            dnd-notification = "󰂛";
+            dnd-none = "󰂛";
+            inhibited-notification = "󱅫";
+            inhibited-none = "󰂚";
+            dnd-inhibited-notification = "󰂛";
+            dnd-inhibited-none = "󰂛";
+          };
+          return-type = "json";
+          exec = "swaync-client -swb";
+          on-click = "swaync-client -t -sw";
+          on-click-right = "swaync-client -d -sw";
+          escape = true;
+          tooltip = false;
+        };
+
+        "custom/power" = {
+          format = "󰐥";
+          tooltip = false;
+          on-click = "wlogout -b 5 -T 260 -B 260 -L 120 -R 120";
         };
       }
     ];
@@ -103,18 +216,30 @@ in
         color: ${p.fg};
       }
 
-      .modules-left,
-      .modules-right,
-      #mpris {
+      tooltip {
+        background: ${p.bg0};
+        border: 1px solid ${p.bg3};
+      }
+
+      /* Cada grupo é uma pílula própria. */
+      #launcher,
+      #window,
+      #mpris,
+      #system,
+      #status,
+      #tray,
+      #clock,
+      #custom-notification,
+      #custom-power {
         background: ${p.bg1};
-        padding: 1px 8px;
-        margin: 5px 4px 0 4px;
+        padding: 1px 10px;
+        margin: 5px 3px 0 3px;
       }
 
       #custom-logo {
         font-size: 20px;
         color: ${p.brightRed};
-        padding: 0 14px 0 4px;
+        padding: 0 12px 0 2px;
       }
 
       #workspaces button {
@@ -130,35 +255,81 @@ in
         min-width: 34px;
       }
 
+      #workspaces button.urgent {
+        color: ${p.brightRed};
+      }
+
       #workspaces button:hover {
         color: ${p.brightRed};
         box-shadow: none;
         text-shadow: none;
       }
 
-      /* A pílula do centro é o próprio módulo, para sumir quando nada toca. */
+      #window {
+        color: ${p.fg4};
+      }
+
+      /* Sem janela aberta, a pílula do título some. */
+      window#waybar.empty #window {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+      }
+
       #mpris {
         color: ${p.fg};
-        padding: 1px 12px;
+        padding: 1px 14px;
       }
 
       #mpris.paused {
         color: ${p.fg4};
       }
 
+      #cpu,
+      #memory,
+      #temperature,
+      #network,
+      #bluetooth,
       #pulseaudio,
-      #language,
-      #tray,
-      #clock {
-        padding: 0 10px;
+      #language {
+        padding: 0 7px;
       }
 
+      #cpu { color: ${p.brightYellow}; }
+      #memory { color: ${p.brightGreen}; }
+      #temperature { color: ${p.brightAqua}; }
+      #temperature.critical { color: ${p.brightRed}; }
+
+      #network.disconnected,
       #pulseaudio.muted {
-        color: ${p.red};
+        color: ${p.brightRed};
+      }
+
+      #bluetooth.connected {
+        color: ${p.accent};
+      }
+
+      #language {
+        color: ${p.accent};
       }
 
       #clock {
         font-weight: bold;
+      }
+
+      #custom-notification {
+        color: ${p.fg};
+      }
+
+      #custom-power {
+        color: ${p.brightRed};
+        padding: 1px 12px 1px 10px;
+      }
+
+      #custom-power:hover,
+      #custom-notification:hover,
+      #custom-logo:hover {
+        background: ${p.bg2};
       }
     '';
   };

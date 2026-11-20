@@ -3,7 +3,7 @@
 let
   p = import ./palette.nix;
   wallpaper = ./files/wallpapers/giyu.jpg;
-  # mako/fuzzel aceitam cor com alfa em hex (RRGGBBAA).
+  # fuzzel aceita cor com alfa em hex (RRGGBBAA).
   hex = c: builtins.substring 1 6 c;
 
   # Cores nomeadas do libadwaita, que o adw-gtk3 (GTK 3) também respeita: é assim
@@ -163,22 +163,6 @@ in
     border = {
       width = 2;
       radius = 12;
-    };
-  };
-
-  services.mako.settings = {
-    font = "${p.font.mono} 11";
-    background-color = p.bg0h;
-    text-color = p.fg;
-    border-color = p.bg2;
-    border-radius = 10;
-    border-size = 2;
-    padding = "10";
-    default-timeout = 5000;
-    "urgency=critical" = {
-      background-color = "#3c1f1e";
-      border-color = p.brightRed;
-      default-timeout = 0;
     };
   };
 
