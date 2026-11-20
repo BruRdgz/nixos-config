@@ -2,7 +2,7 @@
 { pkgs, ... }:
 let
   p = import ./palette.nix;
-  wallpaper = ./files/wallpapers/montanhas.jpg;
+  wallpaper = ./files/wallpapers/giyu.jpg;
   # mako/fuzzel aceitam cor com alfa em hex (RRGGBBAA).
   hex = c: builtins.substring 1 6 c;
 in
