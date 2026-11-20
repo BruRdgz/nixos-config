@@ -1,4 +1,8 @@
 { pkgs, ... }:
+let
+  p = import ./palette.nix;
+  hex = c: builtins.substring 1 6 c;
+in
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -6,7 +10,14 @@
     systemd.enable = false;
     # Config em Lua (formato atual do Hyprland), escrita à mão: mais legível que gerar Lua a partir de Nix.
     configType = "lua";
-    extraConfig = builtins.readFile ./files/hypr/hyprland.lua;
+    # A paleta entra como tabela Lua antes do arquivo, para as cores seguirem o palette.nix.
+    extraConfig = ''
+      local palette = {
+        accent = "${hex p.accent}",
+        blue   = "${hex p.blue}",
+        bg2    = "${hex p.bg2}",
+      }
+    '' + builtins.readFile ./files/hypr/hyprland.lua;
   };
 
   # Opção xkb custom, a mesma do Fedora; o libxkbcommon lê ~/.config/xkb.

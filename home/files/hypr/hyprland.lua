@@ -15,13 +15,18 @@ hl.config({
     general = {
         gaps_in          = 3,
         gaps_out         = 6,
-        border_size      = 0,
+        -- Borda fina: gradiente azul-lâmina na janela em foco, quase invisível nas outras.
+        border_size      = 2,
+        col = {
+            active_border   = { colors = { "rgba(" .. palette.accent .. "ee)", "rgba(" .. palette.blue .. "aa)" }, angle = 45 },
+            inactive_border = "rgba(" .. palette.bg2 .. "66)",
+        },
         resize_on_border = true,
         layout           = "dwindle",
     },
     decoration = {
         rounding     = 8,
-        -- Sem bordas, o foco é indicado escurecendo levemente as janelas inativas.
+        -- Além da borda, as janelas inativas ficam levemente escurecidas.
         dim_inactive = true,
         dim_strength = 0.1,
         blur = {
@@ -121,6 +126,15 @@ hl.bind("XF86AudioPrev",        hl.dsp.exec_cmd("playerctl previous"),   { locke
 ---------------
 ---- RULES ----
 ---------------
+
+-- Painéis translúcidos desfocam o que está atrás (efeito vidro). ignore_alpha evita
+-- desfocar as áreas totalmente transparentes das janelas do swaync/wlogout.
+hl.layer_rule({
+    name  = "blur-panels",
+    match = { namespace = "^(launcher|swaync-control-center|swaync-notification-window|logout_dialog)$" },
+    blur  = true,
+    ignore_alpha = 0.3,
+})
 
 hl.window_rule({
     name  = "suppress-maximize-events",

@@ -88,6 +88,7 @@ in
     noto-fonts-cjk-sans
     noto-fonts-color-emoji
     maple-mono.NF-CN
+    inter
     dejavu_fonts
     fira-code
     source-code-pro

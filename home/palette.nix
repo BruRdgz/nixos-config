@@ -33,7 +33,11 @@
   brightAqua = "#88b5ae";
   brightOrange = "#d39050";
 
-  # Maple Mono NF CN (pacote maple-mono.NF-CN): ligaduras, ícones Nerd Font e kana/kanji
-  # numa fonte só.
-  font.mono = "Maple Mono NF CN";
+  font = {
+    # Maple Mono NF CN (pacote maple-mono.NF-CN): ligaduras, ícones Nerd Font e kana/kanji
+    # numa fonte só. Terminal, barra, editor, lock.
+    mono = "Maple Mono NF CN";
+    # Interface dos apps (GTK, lançador, notificações): proporcional, mais limpa.
+    sans = "Inter";
+  };
 }

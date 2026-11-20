@@ -86,7 +86,7 @@ in
     };
     style = ''
       * {
-        font-family: "${p.font.mono}";
+        font-family: "${p.font.sans}", "${p.font.mono}";
         font-size: 14px;
       }
 

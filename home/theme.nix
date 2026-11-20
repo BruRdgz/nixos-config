@@ -72,7 +72,7 @@ in
       package = pkgs.papirus-icon-theme.override { color = "blue"; };
     };
     font = {
-      name = p.font.mono;
+      name = p.font.sans;
       size = 11;
     };
   };
@@ -155,7 +155,11 @@ in
 
   programs.fuzzel.settings = {
     main = {
-      font = "${p.font.mono}:size=12";
+      # Maple Mono como reserva para glifos que a Inter não tem.
+      font = "${p.font.sans}:size=12,${p.font.mono}:size=12";
+      prompt = "'›  '";
+      lines = 10;
+      inner-pad = 6;
       icon-theme = "Papirus-Dark";
       terminal = "kitty";
       width = 40;
@@ -163,7 +167,7 @@ in
       vertical-pad = 12;
     };
     colors = {
-      background = "${hex p.bg1}f2";
+      background = "${hex p.bg1}d9";
       text = "${hex p.fg}ff";
       prompt = "${hex p.accent}ff";
       input = "${hex p.fg}ff";
