@@ -86,8 +86,8 @@ in
 
   home.pointerCursor = {
     enable = true;
-    name = "Capitaine Cursors (Gruvbox)";
-    package = pkgs.capitaine-cursors-themed;
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
     size = 24;
     gtk.enable = true;
     hyprcursor.enable = true;
