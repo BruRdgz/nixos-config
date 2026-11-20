@@ -33,8 +33,7 @@
   brightAqua = "#88b5ae";
   brightOrange = "#d39050";
 
-  font = {
-    mono = "DejaVu Sans Mono";
-    icons = "JetBrainsMono Nerd Font";
-  };
+  # Maple Mono NF CN (pacote maple-mono.NF-CN): ligaduras, ícones Nerd Font e kana/kanji
+  # numa fonte só.
+  font.mono = "Maple Mono NF CN";
 }

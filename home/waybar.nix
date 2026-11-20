@@ -206,7 +206,7 @@ in
       * {
         border: none;
         border-radius: 13px;
-        font-family: "${p.font.mono}", "${p.font.icons}", "Noto Sans CJK JP";
+        font-family: "${p.font.mono}";
         font-size: 14px;
         min-height: 0;
       }

@@ -83,7 +83,7 @@ in
     };
     style = ''
       * {
-        font-family: "${p.font.mono}", "${p.font.icons}";
+        font-family: "${p.font.mono}";
         font-size: 14px;
       }
 
