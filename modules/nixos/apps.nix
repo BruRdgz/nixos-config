@@ -1,5 +1,10 @@
 {
-  programs.steam.enable = true;
+  programs.steam = {
+    enable = true;
+    # Steam Input em jogos Wayland/XWayland e sessão gamescope no tuigreet.
+    extest.enable = true;
+    gamescopeSession.enable = true;
+  };
   programs.gamemode.enable = true;
 
   # Os mesmos flatpaks do Fedora atual, declarados.

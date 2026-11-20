@@ -13,6 +13,8 @@
     "sd_mod"
   ];
   boot.kernelModules = [ "kvm-amd" ];
+  # KMS precoce: a tela já sai na resolução nativa no Plymouth/senha do LUKS.
+  boot.initrd.kernelModules = [ "amdgpu" ];
 
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;

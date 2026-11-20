@@ -39,6 +39,9 @@ hl.config({
         disable_hyprland_logo   = true,
         -- Sem as frases aleatórias que o Hyprland desenha sobre o wallpaper.
         disable_splash_rendering = true,
+        -- Mexer o mouse ou teclar acorda o monitor após o dpms off do hypridle.
+        mouse_move_enables_dpms = true,
+        key_press_enables_dpms  = true,
     },
     input = {
         kb_layout  = "br,us",
@@ -65,7 +68,11 @@ hl.bind(mainMod .. " + L",         hl.dsp.exec_cmd("loginctl lock-session"))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("uwsm stop"))
 hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd("swaync-client -t -sw"))
 hl.bind(mainMod .. " + Escape",    hl.dsp.exec_cmd("wlogout -b 5 -T 260 -B 260 -L 120 -R 120"))
-hl.bind("Print",                   hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | wl-copy"))
+hl.bind(mainMod .. " + B",         hl.dsp.exec_cmd("brave"))
+-- Prints: região/janela vão pro clipboard; Super+Print salva a tela em ~/Imagens.
+hl.bind("Print",                   hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
+hl.bind("SHIFT + Print",           hl.dsp.exec_cmd("hyprshot -m window --clipboard-only"))
+hl.bind(mainMod .. " + Print",     hl.dsp.exec_cmd("hyprshot -m output -o ~/Imagens"))
 
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))

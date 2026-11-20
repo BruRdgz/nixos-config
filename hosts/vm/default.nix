@@ -31,6 +31,14 @@
   users.users.seraphiine.openssh.authorizedKeys.keyFiles = [ ./claude-vm.pub ];
   users.users.root.openssh.authorizedKeys.keyFiles = [ ./claude-vm.pub ];
   services.openssh.openFirewall = lib.mkForce true;
+  # Acesso de desenvolvimento por chave (o desktop proíbe login de root).
+  services.openssh.settings = {
+    PermitRootLogin = lib.mkForce "prohibit-password";
+    AllowUsers = lib.mkForce [
+      "seraphiine"
+      "root"
+    ];
+  };
 
   system.stateVersion = "26.11";
 }

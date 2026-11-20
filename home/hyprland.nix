@@ -52,5 +52,12 @@
     playerctl
     pavucontrol
     nautilus
+    hyprshot
+    # Apps
+    brave
+    discord
+    mpv
+    imv
+    zathura
   ];
 }

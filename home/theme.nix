@@ -109,11 +109,24 @@ in
       name = p.font.mono;
       size = 11;
     };
+    keybindings = {
+      "ctrl+shift+enter" = "new_window_with_cwd";
+      "ctrl+shift+t" = "new_tab_with_cwd";
+    };
     settings = {
       background_opacity = "0.85";
       window_padding_width = 8;
       confirm_os_window_close = 0;
       enable_audio_bell = false;
+      cursor_shape = "beam";
+      cursor_blink_interval = 0;
+      scrollback_lines = 10000;
+      copy_on_select = "clipboard";
+      strip_trailing_spaces = "smart";
+      url_style = "curly";
+      tab_bar_edge = "top";
+      tab_bar_style = "powerline";
+      tab_powerline_style = "slanted";
 
       foreground = p.fg;
       background = p.bg0;

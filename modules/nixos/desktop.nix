@@ -31,7 +31,15 @@
     pulse.enable = true;
   };
 
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    # Experimental: nível de bateria de fones/controles; FastConnectable: reconexão rápida.
+    settings.General = {
+      Experimental = true;
+      FastConnectable = true;
+    };
+  };
   services.blueman.enable = true;
 
   services.udisks2.enable = true;
