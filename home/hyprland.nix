@@ -59,5 +59,47 @@
     mpv
     imv
     zathura
+    obs-studio
+    baobab
   ];
+
+  # Pastas do usuário em português, como no Fedora (o Super+Print salva em ~/Imagens).
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+    desktop = "$HOME/Área de trabalho";
+    download = "$HOME/Downloads";
+    templates = "$HOME/Modelos";
+    publicShare = "$HOME/Público";
+    documents = "$HOME/Documentos";
+    music = "$HOME/Músicas";
+    pictures = "$HOME/Imagens";
+    videos = "$HOME/Vídeos";
+  };
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications =
+      let
+        browser = "brave-browser.desktop";
+        images = "imv.desktop";
+        video = "mpv.desktop";
+      in
+      {
+        "text/html" = browser;
+        "x-scheme-handler/http" = browser;
+        "x-scheme-handler/https" = browser;
+        "application/pdf" = "org.pwmt.zathura.desktop";
+        "inode/directory" = "org.gnome.Nautilus.desktop";
+        "image/png" = images;
+        "image/jpeg" = images;
+        "image/gif" = images;
+        "image/webp" = images;
+        "video/mp4" = video;
+        "video/x-matroska" = video;
+        "video/webm" = video;
+        "audio/mpeg" = video;
+        "audio/flac" = video;
+      };
+  };
 }

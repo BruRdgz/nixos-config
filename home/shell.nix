@@ -134,6 +134,9 @@ in
     fastfetch
     yt-dlp
     ffmpeg
+    aria2
+    unar
+    nvtopPackages.amd
   ];
   # Barra de status na paleta: sessão em azul-lâmina, janela atual em mostarda.
   # Entra no lugar do marcador, antes do TPM: o continuum processa o

@@ -49,6 +49,16 @@
     ruff
     pyright
     pre-commit
+    python3Packages.ipython
+    mypy
+    # Shell / utilitários de dev
+    shellcheck
+    shfmt
+    hyperfine
+    watchexec
+    # Assistentes no terminal
+    claude-code
+    codex
     # Web
     nodejs
     # C/C++

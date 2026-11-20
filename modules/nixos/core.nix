@@ -53,7 +53,14 @@
 
   hardware.enableAllFirmware = true;
   services.fwupd.enable = true;
-  services.printing.enable = true;
+
+  # Como no Fedora: o oomd mata o processo que devora a RAM antes do sistema travar,
+  # e o resolved faz cache de DNS (o NetworkManager e a Tailscale passam por ele).
+  systemd.oomd = {
+    enable = true;
+    enableUserSlices = true;
+  };
+  services.resolved.enable = true;
 
   time.timeZone = "Europe/Lisbon";
   i18n.defaultLocale = "pt_BR.UTF-8";
@@ -108,6 +115,9 @@
     pciutils
     usbutils
     smartmontools
+    lm_sensors
+    nethogs
+    compsize # compressão real do btrfs: `sudo compsize /`
     dig
     mtr
     nmap

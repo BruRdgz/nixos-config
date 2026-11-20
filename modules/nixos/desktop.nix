@@ -52,5 +52,17 @@
     noto-fonts-color-emoji
     maple-mono.NF-CN
     dejavu_fonts
+    fira-code
+    source-code-pro
   ];
+
+  # Codecs para apps GStreamer (miniaturas de vídeo no Nautilus, players GNOME).
+  environment.systemPackages = with pkgs.gst_all_1; [
+    gst-plugins-base
+    gst-plugins-good
+    gst-plugins-bad
+    gst-plugins-ugly
+    gst-libav
+  ];
+  environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = "/run/current-system/sw/lib/gstreamer-1.0";
 }
