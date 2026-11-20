@@ -29,6 +29,7 @@ in
       control-center-margin-right = 8;
       control-center-margin-bottom = 8;
       notification-window-width = 380;
+      text-empty = "Nada por aqui";
       timeout = 6;
       timeout-low = 4;
       fit-to-screen = true;
@@ -231,6 +232,9 @@ in
         border: 2px solid ${p.bg2};
         border-radius: 18px;
         margin: 10px;
+        /* Largura mínima maior que a natural de qualquer rótulo: o espaço que sobra é
+           dividido por igual, então os cinco cartões ficam do mesmo tamanho. */
+        min-width: 160px;
         background-repeat: no-repeat;
         background-position: center 38%;
         background-size: 34%;

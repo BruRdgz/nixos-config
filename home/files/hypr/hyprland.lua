@@ -52,6 +52,22 @@ hl.config({
     },
 })
 
+----------------
+-- ANIMAÇÕES --
+----------------
+
+-- Curva do config antigo: passa um pouco do alvo (1.05) e volta, um leve "quique".
+hl.curve("overshot", { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.05} } })
+hl.curve("smooth",   { type = "bezier", points = { {0.25, 1},   {0.5, 1}    } })
+
+hl.animation({ leaf = "windows",    enabled = true, speed = 7,  bezier = "overshot" })
+hl.animation({ leaf = "windowsOut", enabled = true, speed = 7,  bezier = "default", style = "popin 80%" })
+hl.animation({ leaf = "border",     enabled = true, speed = 10, bezier = "default" })
+hl.animation({ leaf = "fade",       enabled = true, speed = 7,  bezier = "default" })
+-- Painéis (fuzzel, swaync, wlogout) entram com fade em vez de deslizar.
+hl.animation({ leaf = "layers",     enabled = true, speed = 4,  bezier = "smooth", style = "fade" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 6,  bezier = "smooth", style = "slide" })
+
 ---------------
 ---- BINDS ----
 ---------------

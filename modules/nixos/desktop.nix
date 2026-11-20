@@ -1,13 +1,46 @@
 { pkgs, ... }:
+let
+  p = import ../../home/palette.nix;
+  hex = c: builtins.substring 1 6 c;
+in
 {
   programs.hyprland = {
     enable = true;
     withUWSM = true;
   };
 
+  # As 16 cores do console (TTYs e tuigreet) na paleta, na mesma ordem do kitty.
+  console.colors = map hex [
+    p.bg0
+    p.red
+    p.green
+    p.yellow
+    p.blue
+    p.purple
+    p.aqua
+    p.fg4
+    p.gray
+    p.brightRed
+    p.brightGreen
+    p.brightYellow
+    p.brightBlue
+    p.brightPurple
+    p.brightAqua
+    p.fg
+  ];
+
   services.greetd = {
     enable = true;
-    settings.default_session.command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd 'uwsm start hyprland-uwsm.desktop'";
+    # O tema do tuigreet usa os nomes ANSI, que o console.colors acima mapeia na paleta:
+    # azul-lâmina na moldura e no prompt, carmim na hora, mostarda nos atalhos.
+    settings.default_session.command = builtins.concatStringsSep " " [
+      "${pkgs.tuigreet}/bin/tuigreet"
+      "--time --time-format '%a, %d %b · %H:%M'"
+      "--remember --asterisks"
+      "--width 60 --window-padding 2 --container-padding 2"
+      "--theme 'border=lightblue;title=lightblue;prompt=lightblue;input=white;text=white;time=lightred;greet=white;action=darkgray;button=yellow;container=black'"
+      "--cmd 'uwsm start hyprland-uwsm.desktop'"
+    ];
   };
 
   # Keyring destravado pela senha do login (segredos de apps, tokens do gh etc.).

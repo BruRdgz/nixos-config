@@ -20,6 +20,20 @@ let
         <path d="${path}" fill="${p.bg1}"/>
       </svg>
     '';
+  # Cantos côncavos logo abaixo dos blocos das pontas, como se escorressem pela
+  # borda da tela. Um quarto de círculo recortado de um quadrado na cor do bloco.
+  cornerRadius = 12;
+  corner =
+    side:
+    let
+      r = toString cornerRadius;
+      path = if side == "left" then "M0 0 H${r} A${r} ${r} 0 0 0 0 ${r} Z" else "M${r} 0 H0 A${r} ${r} 0 0 1 ${r} ${r} Z";
+    in
+    pkgs.writeText "waybar-corner-${side}.svg" ''
+      <svg xmlns="http://www.w3.org/2000/svg" width="${r}" height="${r}" viewBox="0 0 ${r} ${r}">
+        <path d="${path}" fill="${p.bg1}"/>
+      </svg>
+    '';
   # Bloco com a curva de um lado: a cor de fundo fica no padding-box e a curva ocupa
   # a borda (transparente) daquele lado.
   withEar = side: ''
@@ -237,6 +251,27 @@ in
           on-click = "wlogout -b 5 -T 260 -B 260 -L 120 -R 120";
         };
       }
+
+      # Segunda barra só com os cantos: transparente, sem zona exclusiva e sem
+      # capturar cliques, logo abaixo da barra principal.
+      {
+        name = "corners";
+        layer = "top";
+        position = "top";
+        height = cornerRadius;
+        exclusive = false;
+        passthrough = true;
+        modules-left = [ "custom/corner-left" ];
+        modules-right = [ "custom/corner-right" ];
+        "custom/corner-left" = {
+          format = " ";
+          tooltip = false;
+        };
+        "custom/corner-right" = {
+          format = " ";
+          tooltip = false;
+        };
+      }
     ];
 
     style = ''
@@ -293,6 +328,19 @@ in
 
       /* Bloco da direita começa com a curva à esquerda. */
       #system { ${withEar "left"} }
+
+      #custom-corner-left,
+      #custom-corner-right {
+        font-size: 1px;
+        padding: 0;
+        margin: 0;
+        min-width: ${toString cornerRadius}px;
+        min-height: ${toString cornerRadius}px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      #custom-corner-left { background-image: url("${corner "left"}"); }
+      #custom-corner-right { background-image: url("${corner "right"}"); }
 
       #custom-logo {
         font-size: 20px;
