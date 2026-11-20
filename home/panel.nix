@@ -4,12 +4,14 @@
 let
   p = import ./palette.nix;
   # Os ícones do wlogout vêm roxos; recolore para o texto da paleta (mantendo o alfa).
-  wlogoutIcons = pkgs.runCommand "wlogout-icons-palette" { nativeBuildInputs = [ pkgs.imagemagick ]; } ''
-    mkdir -p $out
-    for f in ${pkgs.wlogout}/share/wlogout/icons/*.png; do
-      magick "$f" -fill "${p.fg}" -colorize 100 "$out/$(basename "$f")"
-    done
-  '';
+  wlogoutIcons =
+    pkgs.runCommand "wlogout-icons-palette" { nativeBuildInputs = [ pkgs.imagemagick ]; }
+      ''
+        mkdir -p $out
+        for f in ${pkgs.wlogout}/share/wlogout/icons/*.png; do
+          magick "$f" -fill "${p.fg}" -colorize 100 "$out/$(basename "$f")"
+        done
+      '';
   # Os 5 botões numa linha só (o padrão é 3 por linha, deixando uma vaga vazia), com
   # margens de janela em px. TODO(hardware): ajustar -T/-B/-L/-R ao monitor real.
   powerMenu = "wlogout -b 5 -T 260 -B 260 -L 120 -R 120";

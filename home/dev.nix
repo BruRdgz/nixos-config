@@ -26,6 +26,8 @@
   programs.helix = {
     enable = true;
     defaultEditor = true;
+    # Usa as 16 cores ANSI do kitty (a paleta) e o fundo translúcido do terminal.
+    settings.theme = "base16_transparent";
   };
   # Aponta para o scala-psi-host e para uma JDK do coursier: só funciona depois de
   # clonar o projeto e baixar a JDK (o nix-ld cobre os binários do coursier).

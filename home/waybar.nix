@@ -13,8 +13,7 @@ let
   ear =
     side:
     let
-      path =
-        if side == "right" then "M0 0 H26 C13 0 13 32 0 32 Z" else "M26 0 H0 C13 0 13 32 26 32 Z";
+      path = if side == "right" then "M0 0 H26 C13 0 13 32 0 32 Z" else "M26 0 H0 C13 0 13 32 26 32 Z";
     in
     pkgs.writeText "waybar-ear-${side}.svg" ''
       <svg xmlns="http://www.w3.org/2000/svg" width="26" height="32" viewBox="0 0 26 32" preserveAspectRatio="none">

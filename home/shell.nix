@@ -106,7 +106,14 @@ in
   };
   programs.lazygit.enable = true;
   programs.yazi.enable = true;
-  programs.btop.enable = true;
+  programs.btop = {
+    enable = true;
+    # "TTY" desenha com as cores do terminal (a paleta), sem fundo próprio.
+    settings = {
+      color_theme = "TTY";
+      theme_background = false;
+    };
+  };
   # O thefuck saiu do nixpkgs; o pay-respects é o sucessor compatível.
   programs.pay-respects.enable = true;
 

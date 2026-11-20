@@ -1,7 +1,12 @@
 # sops-nix: os segredos ficam criptografados em secrets/secrets.yaml e são
 # descriptografados para /run/secrets na ativação, nunca no /nix/store.
 # A máquina usa a chave SSH do host; editar: `sops secrets/secrets.yaml`.
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   # Fechado na interface pública; acessível pela Tailscale (interface confiável).
   services.openssh = {
