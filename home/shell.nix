@@ -70,14 +70,17 @@ in
       if [[ -o interactive && -t 0 && -t 1 && -z "$TMUX" && -z "$VSCODE_INJECTION" && -z "$INTELLIJ_ENVIRONMENT_READER" ]]; then
         # O primeiro terminal assume a sessão "default" (as abas restauradas pelo
         # continuum). Os seguintes entram numa sessão agrupada com ela: mesmas abas, mas
-        # cada terminal ganha uma aba nova e troca de aba sem espelhar os outros. A sessão
-        # agrupada some ao fechar o terminal; a aba fica, como qualquer aba do tmux.
+        # cada terminal ganha uma aba própria e troca de aba sem espelhar os outros. Essa
+        # aba é efêmera: ao fechar o terminal (ou desanexar), ela e a sessão somem.
         if ! tmux has-session -t default 2>/dev/null; then
           tmux new-session -s default
         elif [[ -z "$(tmux list-clients -t default 2>/dev/null)" ]]; then
           tmux attach-session -t default
         else
-          tmux new-session -t default -s "term-$$" \; set-option destroy-unattached on \; new-window -c "$PWD"
+          local win
+          win=$(tmux new-window -d -t default -c "$PWD" -P -F '#{window_id}')
+          tmux new-session -t default -s "term-$$" \; set-option destroy-unattached on \
+            \; set-hook client-detached "kill-window -t $win" \; select-window -t "$win"
         fi
       fi
     '';
