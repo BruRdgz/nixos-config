@@ -29,10 +29,19 @@ hl.config({
         -- Além da borda, as janelas inativas ficam levemente escurecidas.
         dim_inactive = true,
         dim_strength = 0.1,
+        -- Vidro fosco: desfoque largo (3 passadas), cores do fundo mais vivas
+        -- (vibrancy), leve granulado (noise) e um pouco mais escuro para o texto
+        -- por cima continuar legível.
         blur = {
-            enabled = true,
-            size    = 6,
-            passes  = 2,
+            enabled           = true,
+            size              = 10,
+            passes            = 3,
+            noise             = 0.02,
+            contrast          = 1.1,
+            brightness        = 0.85,
+            vibrancy          = 0.25,
+            vibrancy_darkness = 0.2,
+            popups            = true,
         },
     },
     dwindle = {

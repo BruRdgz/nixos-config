@@ -167,19 +167,20 @@ in
       vertical-pad = 12;
     };
     colors = {
-      background = "${hex p.bg1}d9";
+      # Vidro: fundo translúcido sobre o blur, seleção e borda em branco quente sutil.
+      background = "${hex p.bg0}b3";
       text = "${hex p.fg}ff";
       prompt = "${hex p.accent}ff";
       input = "${hex p.fg}ff";
       match = "${hex p.accent}ff";
-      selection = "${hex p.bg3}ff";
-      selection-text = "${hex p.fg}ff";
+      selection = "${hex p.fg0}1f";
+      selection-text = "${hex p.fg0}ff";
       selection-match = "${hex p.accent}ff";
-      border = "${hex p.bg2}ff";
+      border = "${hex p.fg0}2e";
     };
     border = {
-      width = 2;
-      radius = 12;
+      width = 1;
+      radius = 14;
     };
   };
 

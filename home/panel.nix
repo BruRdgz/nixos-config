@@ -90,9 +90,11 @@ in
         font-size: 14px;
       }
 
+      /* Vidro: o painel é translúcido sobre o blur do Hyprland, com aresta clara
+         fina; os cartões internos são um véu claro em vez de marrom chapado. */
       .control-center {
-        background: alpha(${p.bg0}, 0.92);
-        border: 2px solid ${p.bg2};
+        background: alpha(${p.bg0}, 0.62);
+        border: 1px solid alpha(${p.fg0}, 0.14);
         border-radius: 14px;
         color: ${p.fg};
         padding: 8px;
@@ -103,15 +105,15 @@ in
       .notification,
       .notification-default-action,
       .floating-notifications .notification {
-        background: ${p.bg1};
+        background: alpha(${p.bg0}, 0.72);
         color: ${p.fg};
         border-radius: 12px;
       }
 
-      .notification { border: 1px solid ${p.bg2}; }
+      .notification { border: 1px solid alpha(${p.fg0}, 0.12); }
       .notification.critical { border-color: ${p.brightRed}; }
 
-      .notification-default-action:hover { background: ${p.bg2}; }
+      .notification-default-action:hover { background: alpha(${p.fg0}, 0.08); }
 
       .summary { color: ${p.fg0}; font-weight: bold; }
       .body, .time { color: ${p.fg4}; }
@@ -144,16 +146,23 @@ in
 
       .widget-mpris > box > button,
       .widget-mpris-player {
-        background: ${p.bg1};
+        background: alpha(${p.fg0}, 0.05);
+        border: 1px solid alpha(${p.fg0}, 0.08);
         border-radius: 12px;
         margin: 6px 8px;
         padding: 8px;
       }
+      /* O padrão do swaync escurece o player com uma camada preta e sombra; aqui ele
+         fica no mesmo vidro dos outros cartões (a capa do álbum continua por baixo). */
+      .widget-mpris .widget-mpris-player { box-shadow: none; }
+      .widget-mpris .widget-mpris-player .mpris-overlay { background-color: alpha(${p.bg0}, 0.35); }
+      .widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-album-art { box-shadow: none; }
       .widget-mpris-title { color: ${p.fg0}; font-weight: bold; }
       .widget-mpris-subtitle { color: ${p.fg4}; }
 
       .widget-volume {
-        background: ${p.bg1};
+        background: alpha(${p.fg0}, 0.05);
+        border: 1px solid alpha(${p.fg0}, 0.08);
         border-radius: 12px;
         margin: 6px 8px;
         padding: 6px 10px;
@@ -162,13 +171,14 @@ in
       .widget-volume highlight { background: ${p.accent}; border-radius: 99px; }
 
       .widget-buttons-grid {
-        background: ${p.bg1};
+        background: alpha(${p.fg0}, 0.05);
+        border: 1px solid alpha(${p.fg0}, 0.08);
         border-radius: 12px;
         margin: 6px 8px;
         padding: 6px;
       }
       .widget-buttons-grid > flowbox > flowboxchild > button {
-        background: ${p.bg2};
+        background: alpha(${p.fg0}, 0.07);
         color: ${p.fg};
         border-radius: 10px;
         min-height: 42px;
@@ -222,14 +232,15 @@ in
         box-shadow: none;
       }
 
+      /* Fundo meio transparente: o blur do Hyprland deixa a tela inteira fosca. */
       window {
-        background-color: alpha(${p.bg0h}, 0.80);
+        background-color: alpha(${p.bg0h}, 0.45);
       }
 
       button {
         color: ${p.fg};
-        background-color: alpha(${p.bg1}, 0.90);
-        border: 2px solid ${p.bg2};
+        background-color: alpha(${p.fg0}, 0.06);
+        border: 1px solid alpha(${p.fg0}, 0.14);
         border-radius: 18px;
         margin: 10px;
         /* Largura mínima maior que a natural de qualquer rótulo: o espaço que sobra é
@@ -244,7 +255,7 @@ in
 
       button:focus,
       button:hover {
-        background-color: ${p.bg2};
+        background-color: alpha(${p.fg0}, 0.12);
         border-color: ${p.accent};
         color: ${p.accent};
       }
