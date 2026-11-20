@@ -25,6 +25,8 @@
   outputs =
     { nixpkgs, ... }@inputs:
     {
+      devShells.x86_64-linux = import ./shells { pkgs = nixpkgs.legacyPackages.x86_64-linux; };
+
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [ ./hosts/desktop ];

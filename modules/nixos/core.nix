@@ -66,6 +66,8 @@
   # Rebuild mais legível; o `nh clean` substitui o nix.gc.
   programs.nh = {
     enable = true;
+    # Onde o repo fica clonado; `nh os switch` (alias `rebuild`) e o direnv usam isto.
+    flake = "/home/seraphiine/nixos-config";
     clean = {
       enable = true;
       extraArgs = "--keep-since 14d --keep 10";
